@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -14,6 +15,8 @@ public class FirstTest {
         WebDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(4000));
         driver.get("https://next.privat24.ua/money-transfer/card");
+
+        driver.manage().window().maximize();
 
         By NumberCardA = By.xpath("//input[@data-qa-node='numberdebitSource']");
         By dataCardA = By.xpath("//input[@data-qa-node='expiredebitSource']");
@@ -32,6 +35,8 @@ public class FirstTest {
 
         By confirButton = By.xpath("//button[@class='sc-VigVT hcHAAV']");
 
+        By basket = By.xpath("//button[@class='sc-VigVT hcHAAV']");
+
         driver.findElement(NumberCardA).sendKeys("4006 8956 8904 8337");
         driver.findElement(dataCardA).sendKeys("0323");
         driver.findElement(cvvCardA).sendKeys("480");
@@ -49,5 +54,12 @@ public class FirstTest {
 
         driver.findElement(confirButton).click();
 
+        driver.findElement(basket).click();
+
+        Assertions.assertEquals("Переказ власних коштів. НА БРОНИКИ", driver.findElement(By.xpath("//div[@data-qa-node='details']")).getText());
+        Assertions.assertEquals("4006 **** **** 8337", driver.findElement(By.xpath("//td[@data-qa-node='card']")).getText());
+        Assertions.assertEquals("4558 **** **** 1715", driver.findElement(By.xpath("//span[@data-qa-node='cardB']")).getText());
+        Assertions.assertEquals("900 USD", driver.findElement(By.xpath("//div[@data-qa-node='amount']")).getText());
+        Assertions.assertEquals("Про комісії", driver.findElement(By.xpath("//a[@class='sc-caSCKo gVhIWz']")).getText());
     }
 }
